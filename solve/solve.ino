@@ -39,9 +39,9 @@ void receiveEvent()
   digitalWrite(13, HIGH); // turn on led
   delay(100); // delay for 500 ms
   digitalWrite(13, LOW); // turn off led
-//  delay(100); // delay for 500 ms
+  //  delay(100); // delay for 500 ms
 
-  //  byte c = Wire.read();
-  //  Serial.print("c is:");
-  //  Serial.println(c);
+  byte c = Wire.read();
+  Serial.print("c is:");
+  Serial.println(c);
 }

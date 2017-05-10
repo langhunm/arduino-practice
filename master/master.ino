@@ -24,14 +24,17 @@ class Ctrl_Single
     void setStart(bool x)
     {
       start = x;
+      change = true;
     }
     void setHongwai(bool x)
     {
       hongwai = x;
+      change = true;
     }
     void setStyle(int x)
     {
       style = x;
+      change = true;
     }
     bool getStart()
     {
@@ -54,21 +57,21 @@ void sent(int zhuji, bool a, bool b, int c) {
   Wire.write(a);        // sends five bytes
   Wire.write(b);      // sends one byte
   Wire.write(c);
-  Wire.endTransmission();    // stop transmitting
+  Wire.endTransmission(false);    // stop transmitting
 }
 
 void sent_test(bool a)
 {
   Wire.beginTransmission(1);
   Wire.write(a);
-  Wire.endTransmission();
+  Wire.endTransmission(true);
 }
 void sent_test1(bool a, bool b)
 {
   Wire.beginTransmission(1);
   Wire.write(a);
   Wire.write(b);
-  Wire.endTransmission();
+  Wire.endTransmission(true);
 }
 
 Ctrl_Single led_strip[LED_STRIP_NUM];
@@ -84,8 +87,36 @@ void change() {
   }
 }
 
-void setup() {
-  //chu shi hua kongzuiduixiangzu
+
+
+void change_style() {
+  int ctl_length = sizeof(led_strip) / sizeof(*led_strip);
+  //  Serial.println(ctl_length);
+  int i;
+  for (i = 0; i < ctl_length; i++)
+  {
+    led_strip[i].change = true;
+    int cur_style = led_strip[i].getStyle();
+    Serial.print("cur_style:");
+    Serial.println(cur_style);
+
+    if (cur_style != 6)
+    {
+      cur_style = cur_style + 1;
+      led_strip[i].setStyle(cur_style);
+      Serial.println(led_strip[i].getStyle());
+    }
+
+    else
+      led_strip[i].setStyle(1);
+    //    Serial.print("cur_style+:");
+    //    Serial.println(led_strip[i].getStyle());
+  }
+}
+
+
+void strip_init()
+{
   int i;
   for (i = 0; i < LED_STRIP_NUM; i++) {
     led_strip[i].change = true;
@@ -93,6 +124,11 @@ void setup() {
     led_strip[i].setHongwai(false);
     led_strip[i].setStyle(1);
   }
+}
+
+void setup() {
+  //chu shi hua kongzuiduixiangzu
+  strip_init();
   //chushihua i2c tongxin
   Wire.begin();
 
@@ -101,7 +137,9 @@ void setup() {
 
   //外部中断初始化
   pinMode(2, INPUT_PULLUP);
+  pinMode(3, INPUT_PULLUP);
   attachInterrupt(0, change, HIGH);
+  attachInterrupt(1, change_style, HIGH);
 }
 
 
@@ -115,23 +153,10 @@ void loop() {
       //      sent(i, led_strip[i].getStart(), led_strip[i].getHongwai(), led_strip[i].getStyle());
       if (i == 1)
       {
-        //        sent_test(true);
-        //        Serial.println("foraaaaaaaa");
-        //        sent_test(false);
-        //        Serial.println("forbbbbbbb");
-        //        Serial.print("byte:");
-        //        Serial.println(sizeof(byte));
         sent(i, led_strip[i].getStart(), led_strip[i].getHongwai(), led_strip[i].getStyle());
-        led_strip[i].change = false;
-        Serial.println(led_strip[i].change);
       }
-      //update status
       led_strip[i].change = false;
-//      Serial.println("for");
     }
-//    Serial.println(led_strip[i].change);
   }
-//  sent(1, led_strip[1].getStart(), led_strip[1].getHongwai(), led_strip[i].getStyle());
-//  delay(300);
 
 }
