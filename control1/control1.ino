@@ -26,9 +26,9 @@ void hongwaiInter() {
     hongwai = true;
     //    zhixing(5);
     Serial.println("hw sucessfull!");
-    delay(1000000);
+//    delay(1000000);
   }
-  digitalWrite(2, LOW);
+//  digitalWrite(2, LOW);
 }
 
 void setStart() {
