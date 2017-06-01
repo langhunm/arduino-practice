@@ -1,7 +1,7 @@
 #include <FastLED.h>
 
 
-#define LED_PIN     11
+#define LED_PIN     4
 #define NUM_LEDS    120
 #define NUM_LEDS1    60
 #define BRIGHTNESS  100

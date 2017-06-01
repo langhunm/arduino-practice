@@ -7,8 +7,8 @@
 
 #include <FastLED.h>
 
-#define LED_PIN     11
-#define NUM_LEDS    180
+#define LED_PIN    4
+#define NUM_LEDS    150
 #define NUM_LEDS_HUO    100
 #define BRIGHTNESS  100
 #define LED_TYPE    WS2812B
@@ -78,9 +78,10 @@ void loop() {
     counter_hongwai--;
     Serial.println(counter_hongwai);
     //        Serial.println("aaa");
-//    FastLED.clear();
-//    FastLED.clearData();
-//    FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds2, NUM_LEDS).setCorrection( TypicalLEDStrip );
+    FastLED.clear();
+    FastLED.clearData();
+    FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds2, NUM_LEDS).setCorrection( TypicalLEDStrip );
+    FastLED.clear();
     FastLED.clearData();
     FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds1, NUM_LEDS_HUO).setCorrection( TypicalLEDStrip );
 
